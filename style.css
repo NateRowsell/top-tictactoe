@@ -132,6 +132,9 @@ table {
   --borderOrange: #fbccaa;
   --blue: #68d2e7;
   --darkBlue: #168a93;
+  --shadowGrey: rgba(70, 70, 70, 0.5);
+  --hoverColor: #69645f;
+  --gridLines: #69645f;
 }
 
 /* BEGIN MAIN CSS  */
@@ -142,13 +145,13 @@ body {
   align-items: center;
   flex-direction: column;
   font-size: 15px;
+  padding: 5%;
 }
 
 #mainContainer {
-  margin-top: 15%;
-  box-shadow: 0px 0px 15px 15px black;
-  -webkit-box-shadow: 0px 0px 15px 15px black;
-  -moz-box-shadow: 0px 0px 15px 15px black;
+  box-shadow: 0px 0px 15px 15px var(--shadowGrey);
+  -webkit-box-shadow: 0px 0px 15px 15px var(--shadowGrey);
+  -moz-box-shadow: 0px 0px 15px 15px var(--shadowGrey);
 }
 
 /* SCOREBOARD STYLING  */
@@ -209,7 +212,7 @@ body {
 }
 
 .boardSpace {
-  border: 2px solid black;
+  border: 2px solid var(--gridLines);
   height: 33.33%;
   width: 33.33%;
 }
@@ -218,22 +221,107 @@ body {
 
 #controlPanel {
   width: 100%;
-  height: 100px;
+  height: 150px;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column-reverse;
+  gap: 30px;
+  justify-content: center;
   align-items: center;
   border: 5px solid var(--borderOrange);
+  font-size: 1.3em;
+}
+
+#topControlPanel,
+#bottomControlPanel {
+  display: flex;
+}
+
+#topControlPanel {
+  gap: 115px;
+  justify-content: center;
+  width: 100%;
+}
+
+#resetButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+#resetButton span {
+  font-size: 2em;
+}
+
+#resetButton:hover,
+#vsPlayer:hover,
+#vsComputer:hover {
+  cursor: pointer;
+  color: var(--hoverColor);
 }
 
 #gameMode {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  width: 50%;
+  align-items: center;
+  gap: 5px;
+  width: 150px;
 }
 
-button {
+#gameModeOptions {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+#vsPlayer,
+#vsComputer {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+#designedBy {
+  position: absolute;
+  bottom: 0;
+}
+
+.selectedGameMode {
   background-color: var(--borderOrange);
-  border: none;
+  border-radius: 15px;
   padding: 5px;
-  font-size: 1.2em;
+}
+
+#playAs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+#playAsOptions {
+  display: flex;
+  flex-direction: row;
+  width: 150px;
+  justify-content: space-evenly;
+}
+
+#playAsX span,
+#playAsO span {
+  font-size: 2em;
+}
+
+#playAsX span:hover,
+#playAsO span:hover {
+  cursor: pointer;
+  color: var(--hoverColor);
+}
+
+.selected {
+  background-color: var(--borderOrange);
+  border-radius: 75%;
+  /* padding: 10px; */
 }

@@ -49,18 +49,60 @@
         </div>
       </div>
       <div id="controlPanel">
-        <button type="button" id="resetButton" class="control-button">
-          Reset
-        </button>
-        <div id="gameMode">
-          <button type="button" id="playerVsPlayer" class="control-button">
-            vs Player
-          </button>
-          <button type="button" id="playerVsComputer" class="control-button">
-            vs Computer
-          </button>
+        <div id="topControlPanel">
+          <div id="playAs">
+            <div id="playAsOptions">
+              <div id="playAsX">
+                <span class="material-icons selected">
+                  clear
+                </span>
+              </div>
+              <div id="playAsO">
+                <span class="material-icons">
+                  radio_button_unchecked
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div id="gameMode">
+            <div id="gameModeOptions">
+              <div id="vsPlayer" class="selectedGameMode">
+                <span class="material-icons">
+                  person
+                </span>
+                <span>V</span>
+                <span class="material-icons">
+                  person
+                </span>
+              </div>
+              <div id="vsComputer">
+                <span class="material-icons">
+                  person
+                </span>
+                <span>V</span>
+                <span class="material-icons">
+                  computer
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="bottomControlPanel">
+          <div id="resetButton" class="control-button">
+            <span class="material-icons">
+              restart_alt
+            </span>
+          </div>
         </div>
       </div>
     </div>
+    <!-- <div id="designedBy">
+      <span>
+        Design inspired by
+        <a href="https://dribbble.com/jerrylow">Jerry Low</a>
+      </span>
+    </div> -->
   </body>
 </html>
