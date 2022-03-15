@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <script src="main.js" async defer></script>
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <div id="mainContainer">
+      <div id="scoreBoard">
+        <div id="playerOne">
+          <span class="material-icons">
+            clear
+          </span>
+          <div id="playerOneScore">1 wins</div>
+        </div>
+        <div id="playerTwo">
+          <span class="material-icons">
+            radio_button_unchecked
+          </span>
+          <div id="playerTwoScore">3 wins</div>
+        </div>
+        <div id="tieGames">
+          <span class="material-icons">
+            balance
+          </span>
+          <div id="tieGameScore">0 ties</div>
+        </div>
+      </div>
+      <div id="boardContainer">
+        <div id="gameBoard">
+          <div class="boardSpace" id="top-left"></div>
+          <div class="boardSpace" id="top-middle"></div>
+          <div class="boardSpace" id="top-right"></div>
+          <div class="boardSpace" id="midde-left"></div>
+          <div class="boardSpace" id="middle-middle"></div>
+          <div class="boardSpace" id="middle-right"></div>
+          <div class="boardSpace" id="bottom-left"></div>
+          <div class="boardSpace" id="bottom-middle"></div>
+          <div class="boardSpace" id="bottom-right"></div>
+        </div>
+      </div>
+      <div id="controlPanel">
+        <button type="button" id="resetButton" class="control-button">
+          Reset
+        </button>
+        <div id="gameMode">
+          <button type="button" id="playerVsPlayer" class="control-button">
+            vs Player
+          </button>
+          <button type="button" id="playerVsComputer" class="control-button">
+            vs Computer
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
