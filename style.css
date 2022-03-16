@@ -221,16 +221,17 @@ body {
 
 #controlPanel {
   width: 100%;
-  height: 150px;
+  /* height: 150px; */
+  padding: 25px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 30px;
   justify-content: center;
   align-items: center;
   border: 5px solid var(--borderOrange);
   font-size: 1.3em;
 }
-
+/* 
 #topControlPanel,
 #bottomControlPanel {
   display: flex;
@@ -240,7 +241,7 @@ body {
   gap: 115px;
   justify-content: center;
   width: 100%;
-}
+} */
 
 #resetButton {
   display: flex;
@@ -248,17 +249,18 @@ body {
   align-items: center;
   justify-content: center;
   gap: 5px;
+  background-color: var(--borderOrange);
+  border-radius: 75%;
+  height: 40px;
 }
 
 #resetButton span {
   font-size: 2em;
 }
 
-#resetButton:hover,
-#vsPlayer:hover,
-#vsComputer:hover {
+#resetButton:hover {
   cursor: pointer;
-  color: var(--hoverColor);
+  background-color: var(--gridLines);
 }
 
 #gameMode {
@@ -307,6 +309,7 @@ body {
   flex-direction: row;
   width: 150px;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 #playAsX span,
@@ -320,8 +323,218 @@ body {
   color: var(--hoverColor);
 }
 
-.selected {
+/* TOGGLE SWITCH  */
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 40px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--borderOrange);
-  border-radius: 75%;
-  /* padding: 10px; */
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: '';
+  height: 35px;
+  width: 35px;
+  left: 4px;
+  bottom: 3px;
+  background-color: var(--gridLines);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  /* background-color: #2196f3; */
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(36px);
+  -ms-transform: translateX(36px);
+  transform: translateX(36px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.slider.round span:nth-child(1) {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+}
+
+.slider.round span:nth-child(2) {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+}
+
+/* BIG SLIDER  */
+
+/* The switch - the box around the slider */
+.bigswitch {
+  position: relative;
+  display: inline-block;
+  width: 185px;
+  height: 40px;
+}
+
+/* Hide default HTML checkbox */
+.bigswitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.bigslider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--borderOrange);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.bigslider:before {
+  border-radius: 15px !important;
+  position: absolute;
+  content: '';
+  height: 35px;
+  width: 80px;
+  left: 4px;
+  bottom: 3px;
+  background-color: var(--gridLines);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .bigslider {
+  /* background-color: #2196f3; */
+}
+
+input:focus + .bigslider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .bigslider:before {
+  -webkit-transform: translateX(98px);
+  -ms-transform: translateX(98px);
+  transform: translateX(98px);
+}
+
+/* Rounded sliders */
+.bigslider.biground {
+  border-radius: 34px;
+}
+
+.bigslider.biground:before {
+  border-radius: 50%;
+}
+
+/* PLAYER VS PLAYER  */
+.bigslider.biground span:nth-child(1) {
+  position: absolute;
+  top: 8px;
+  left: 5px;
+}
+
+.bigslider.biground span:nth-child(2) {
+  position: absolute;
+  top: 11px;
+  left: 35px;
+}
+
+.bigslider.biground span:nth-child(3) {
+  position: absolute;
+  top: 8px;
+  left: 55px;
+}
+
+/* PLAYER VS COMP */
+.bigslider.biground span:nth-child(4) {
+  position: absolute;
+  top: 8px;
+  right: 5px;
+}
+
+.bigslider.biground span:nth-child(5) {
+  position: absolute;
+  top: 11px;
+  right: 35px;
+}
+
+.bigslider.biground span:nth-child(6) {
+  position: absolute;
+  top: 8px;
+  right: 55px;
+}
+
+#topControlPanel {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+#bottomControlPanel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#difficulty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.difficulty-button {
+  border-radius: 15px;
+  font-size: 0.7em;
+  border: none;
+  padding: 10px 20px;
+  background-color: var(--borderOrange);
+}
+
+.difficulty-button:hover {
+  cursor: pointer;
+  background-color: var(--gridLines);
+  color: var(--borderOrange);
 }
