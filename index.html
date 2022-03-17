@@ -36,7 +36,7 @@
         </div>
       </div>
       <div id="boardContainer">
-        <div id="gameBoard">
+        <div id="game-board">
           <div class="boardSpace" id="top-left"></div>
           <div class="boardSpace" id="top-middle"></div>
           <div class="boardSpace" id="top-right"></div>
@@ -59,8 +59,8 @@
           <div id="playAs">
             <div id="playAsOptions">
               <label class="switch">
-                <input type="checkbox" />
-                <span class="slider round">
+                <input id="playAsCheckbox" type="checkbox" />
+                <span id="playAsSlider" class="slider round">
                   <span class="material-icons selected">
                     clear
                   </span>
@@ -75,8 +75,8 @@
           <div id="gameMode">
             <div id="gameModeOptions">
               <label class="bigswitch">
-                <input type="checkbox" />
-                <span class="bigslider biground">
+                <input id="gameModeCheckbox" checked="false" type="checkbox" />
+                <span id="gameModeSlider" class="bigslider biground">
                   <span class="material-icons">
                     person
                   </span>
