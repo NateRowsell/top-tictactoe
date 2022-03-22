@@ -4,12 +4,6 @@ const gameModeCheckbox = document.getElementById('gameModeCheckbox')
 const playAsSlider = document.getElementById('playAsSlider')
 const playAsCheckbox = document.getElementById('playAsCheckbox')
 const controlPanel = document.getElementById('controlPanel')
-const X = document.createElement('span')
-X.classList.add('material-icons')
-X.innerText = 'clear'
-const O = document.createElement('span')
-O.classList.add('material-icons')
-O.innerText = 'radio_button_unchecked'
 const boardSpaces = document.querySelectorAll('.boardSpace')
 let bottomControlPanel = document.createElement('div')
 bottomControlPanel.setAttribute('id', 'bottomControlPanel')
@@ -96,23 +90,38 @@ const Gameboard = (() => {
 
 // PLAYER FACTORY
 //Player will need playas() and score()
-const Player = (name) => {
-  let playerName = name
-  let playAs = () => {
-    if (playAsCheckbox.checked == true) {
-      return O
+const Player = (signal) => {
+  let playerSignal = () => {
+    if (signal.toLowerCase() == 'x') {
+      return 'clear'
     } else {
-      return X
+      return 'radio_button_unchecked'
     }
   }
 
   // determine player status first or second x or o
 
-  const playerStatus = () => {
-    if (playAs() == X) {
-      return 'firstPlayer'
-    } else {
-      return 'secondPlayer'
+  // const playerStatus = () => {
+  //   if (playAs() == X) {
+  //     return 'firstPlayer'
+  //   } else {
+  //     return 'secondPlayer'
+  //   }
+  // }
+
+  let boardSpaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+  let moveDone = () => {
+    for (
+      let i = 0;
+      i < Gameboard.gameBoardObject.currentGameboard.length;
+      i++
+    ) {
+      let variableName = boardSpaces[i]
+      Gameboard.gameBoardObject.currentGameboard[i].removeEventListener(
+        'click',
+        variableName,
+      )
     }
   }
 
@@ -124,37 +133,58 @@ const Player = (name) => {
     ) {
       Gameboard.gameBoardObject.currentGameboard[i].addEventListener(
         'click',
-        (e) => {
-          targetSquare = e.currentTarget
-          targetSquare.appendChild(playAs())
-          // figure out below how to remove listener after one use
-          Gameboard.gameBoardObject.currentGameboard[i].removeEventListener(
-            click,
-            this,
-          )
-        },
+        (boardSpaces[i] = function (e) {
+          targetSquare = e.currentTarget.childNodes[1]
+          if (targetSquare.innerText == '') {
+            targetSquare.innerText = playerSignal()
+            moveDone()
+          }
+        }),
       )
     }
   }
 
-  // Need board spaces to have event listener to return targeted node
-  // Append play as function which is x or o as make move function
+  return { playerSignal, makeMove }
+}
 
-  // for (let i = 0; i < boardSpaces.length; i++) {
-  //   boardSpaces[i].addEventListener('click', (e) => {
-  //     targetSquare = e.currentTarget
-  //     if (targetSquare.childNodes.length == 0) {
-  //       targetSquare.appendChild(playAs())
-  //     }
-  //   })
-  // }
+function playGame() {
+  let checkPlayerSignal = () => {
+    if (playAsCheckbox.checked == true) {
+      return 'radio_button_unchecked'
+    } else {
+      return 'clear'
+    }
+  }
 
-  return { playerName, playAs, playerStatus, makeMove }
+  let humanPlayer = checkPlayerSignal()
+
+  if (humanPlayer == 'clear') {
+    let otherPlayer = 'radio_button_unchecked'
+    playerOne = Player('x')
+    playerTwo = Player('o')
+  } else {
+    let otherPlayer = 'clear'
+    playerOne = Player('x')
+    playerTwo = Player('o')
+    console.log(
+      'player one: ',
+      playerOne.playerSignal(),
+      '     player two: ',
+      playerTwo.playerSignal(),
+    )
+  }
+
+  let playRound = () => {
+    playerOne.makeMove()
+    playerTwo.makeMove()
+  }
+
+  playRound()
 }
 
 // TESTING AREA
 // testing for adding divs with factory function
 
-let playerOne = Player()
+// let playerOne = Player()
 
 // TESTING AREA
