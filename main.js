@@ -75,21 +75,38 @@ const Gameboard = (() => {
 
   const newGameboard = () => {
     for (let i = 0; i < gameBoardObject.currentGameboard.length; i++) {
-      if (gameBoardObject.currentGameboard[i] == null) {
-        continue
-      }
-      while (gameBoardObject.currentGameboard[i].firstChild) {
-        gameBoardObject.currentGameboard[i].removeChild(
-          gameBoardObject.currentGameboard[i].lastChild,
-        )
-      }
+      gameBoardObject.currentGameboard[i].firstElementChild.textContent = ''
     }
   }
-  return { newGameboard, gameBoardObject }
+
+  const checkWin = () => {
+    listOfWinningArrays = [
+      [0, 1, 2],
+      [0, 3, 6],
+    ]
+    let thisGameboard = Gameboard.gameBoardObject.currentGameboard
+    let winStatus = false
+    listOfWinningArrays.forEach((element) => {
+      let i = element[0]
+      let j = element[1]
+      let k = element[2]
+      let spaceOne = thisGameboard[i].firstElementChild.textContent
+      let spaceTwo = thisGameboard[j].firstElementChild.textContent
+      let spaceThree = thisGameboard[k].firstElementChild.textContent
+      console.log(spaceOne, spaceTwo, spaceThree)
+      if (spaceOne == '' || spaceTwo == '' || spaceThree == '') {
+        winStatus = false
+      } else if (spaceOne == spaceTwo && spaceOne == spaceThree) {
+        winStatus = true
+      }
+    })
+    return winStatus
+  }
+
+  return { newGameboard, gameBoardObject, checkWin }
 })()
 
 // PLAYER FACTORY
-//Player will need playas() and score()
 const Player = (signal) => {
   let playerSignal = () => {
     if (signal.toLowerCase() == 'x') {
@@ -98,16 +115,6 @@ const Player = (signal) => {
       return 'radio_button_unchecked'
     }
   }
-
-  // determine player status first or second x or o
-
-  // const playerStatus = () => {
-  //   if (playAs() == X) {
-  //     return 'firstPlayer'
-  //   } else {
-  //     return 'secondPlayer'
-  //   }
-  // }
 
   let boardSpaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 
@@ -156,35 +163,30 @@ function playGame() {
     }
   }
 
-  let humanPlayer = checkPlayerSignal()
-
-  if (humanPlayer == 'clear') {
-    let otherPlayer = 'radio_button_unchecked'
+  if (checkPlayerSignal() == 'clear') {
     playerOne = Player('x')
+  } else {
+    playerOne = Player('o')
+  }
+
+  if (checkPlayerSignal() == 'clear') {
     playerTwo = Player('o')
   } else {
-    let otherPlayer = 'clear'
-    playerOne = Player('x')
-    playerTwo = Player('o')
-    console.log(
-      'player one: ',
-      playerOne.playerSignal(),
-      '     player two: ',
-      playerTwo.playerSignal(),
-    )
+    playerTwo = Player('x')
   }
 
   let playRound = () => {
-    playerOne.makeMove()
-    playerTwo.makeMove()
+    if (Gameboard.checkWin() == false) {
+      playerOne.makeMove()
+    }
+    if (Gameboard.checkWin() == false) {
+      playerTwo.makeMove()
+    }
   }
 
   playRound()
 }
 
-// TESTING AREA
-// testing for adding divs with factory function
+//// TO DOOOOOO
 
-// let playerOne = Player()
-
-// TESTING AREA
+//// try using as global variable to track turn / round to step through the rounds
