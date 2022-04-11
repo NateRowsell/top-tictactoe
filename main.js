@@ -42,9 +42,10 @@ gameModeSlider.addEventListener('click', () => {
   }
 })
 
-// set reset button funcionality
+// set reset button function
 resetButton.addEventListener('click', () => {
   Gameboard.newGameboard()
+  // need to remove clear and radio button classes from all board spaces
 })
 
 //GAMEBOARD MODULE
@@ -144,6 +145,7 @@ const Player = (signal) => {
           targetSquare = e.currentTarget.childNodes[1]
           if (targetSquare.innerText == '') {
             targetSquare.innerText = playerSignal()
+            targetSquare.classList.add(playerSignal())
             moveDone()
           }
         }),
@@ -155,6 +157,9 @@ const Player = (signal) => {
 }
 
 function playGame() {
+  let playerOneTurn = true
+  let playerTwoTurn = false
+
   let checkPlayerSignal = () => {
     if (playAsCheckbox.checked == true) {
       return 'radio_button_unchecked'
@@ -176,16 +181,39 @@ function playGame() {
   }
 
   let playRound = () => {
-    if (Gameboard.checkWin() == false) {
+    while (playerOneTurn == true) {
       playerOne.makeMove()
+      playerOneTurn = false
+      playerTwoTurn = true
     }
-    if (Gameboard.checkWin() == false) {
+
+    while (playerTwoTurn == true) {
       playerTwo.makeMove()
+      playerTwoTurn = false
+      playerOneTurn = true
     }
   }
 
+  // let playRound = () => {
+  //   if (Gameboard.checkWin() == false) {
+  //     if (playerOneTurn == true) {
+  //       playerOne.makeMove()
+  //       playerOneTurn = false
+  //       playerTwoTurn = true
+  //     } else if (playerTwoTurn == true) {
+  //       playerTwo.makeMove()
+  //       playerTwoTurn = false
+  //       playerOneTurn = true
+  //     }
+  //   }
+  //   return Gameboard.checkWin()
+  // }
+
   playRound()
 }
+
+// const playerOne = Player('x')
+// const playerTwo = Player('o')
 
 //// TO DOOOOOO
 
