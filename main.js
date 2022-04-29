@@ -94,7 +94,6 @@ const Gameboard = (() => {
       let spaceOne = thisGameboard[i].firstElementChild.textContent
       let spaceTwo = thisGameboard[j].firstElementChild.textContent
       let spaceThree = thisGameboard[k].firstElementChild.textContent
-      console.log(spaceOne, spaceTwo, spaceThree)
       if (spaceOne == '' || spaceTwo == '' || spaceThree == '') {
         winStatus = false
       } else if (spaceOne == spaceTwo && spaceOne == spaceThree) {
@@ -133,7 +132,7 @@ const Player = (signal) => {
     }
   }
 
-  let makeMove = () => {
+  let oPlayerMove = () => {
     for (
       let i = 0;
       i < Gameboard.gameBoardObject.currentGameboard.length;
@@ -144,77 +143,76 @@ const Player = (signal) => {
         (boardSpaces[i] = function (e) {
           targetSquare = e.currentTarget.childNodes[1]
           if (targetSquare.innerText == '') {
-            targetSquare.innerText = playerSignal()
-            targetSquare.classList.add(playerSignal())
+            targetSquare.innerText = 'radio_button_unchecked'
+            targetSquare.classList.add('radio_button_unchecked')
             moveDone()
+            if (Gameboard.checkWin() !== true) {
+              xPlayerMove()
+            } else {
+              console.log(' O has won ...run winners code and add a point')
+            }
           }
         }),
       )
     }
   }
 
-  return { playerSignal, makeMove }
+  let xPlayerMove = () => {
+    for (
+      let i = 0;
+      i < Gameboard.gameBoardObject.currentGameboard.length;
+      i++
+    ) {
+      Gameboard.gameBoardObject.currentGameboard[i].addEventListener(
+        'click',
+        (boardSpaces[i] = function (e) {
+          targetSquare = e.currentTarget.childNodes[1]
+          if (targetSquare.innerText == '') {
+            targetSquare.innerText = 'clear'
+            targetSquare.classList.add('clear')
+            moveDone()
+            if (Gameboard.checkWin() !== true) {
+              oPlayerMove()
+            } else {
+              console.log(' X has won ...run winners code and add a point')
+            }
+          }
+        }),
+      )
+    }
+  }
+
+  return { playerSignal, xPlayerMove }
 }
 
 function playGame() {
-  let playerOneTurn = true
-  let playerTwoTurn = false
-
-  let checkPlayerSignal = () => {
-    if (playAsCheckbox.checked == true) {
-      return 'radio_button_unchecked'
-    } else {
-      return 'clear'
-    }
-  }
-
-  if (checkPlayerSignal() == 'clear') {
-    playerOne = Player('x')
-  } else {
-    playerOne = Player('o')
-  }
-
-  if (checkPlayerSignal() == 'clear') {
-    playerTwo = Player('o')
-  } else {
-    playerTwo = Player('x')
-  }
-
-  let playRound = () => {
-    while (playerOneTurn == true) {
-      playerOne.makeMove()
-      playerOneTurn = false
-      playerTwoTurn = true
-    }
-
-    while (playerTwoTurn == true) {
-      playerTwo.makeMove()
-      playerTwoTurn = false
-      playerOneTurn = true
-    }
-  }
-
-  // let playRound = () => {
-  //   if (Gameboard.checkWin() == false) {
-  //     if (playerOneTurn == true) {
-  //       playerOne.makeMove()
-  //       playerOneTurn = false
-  //       playerTwoTurn = true
-  //     } else if (playerTwoTurn == true) {
-  //       playerTwo.makeMove()
-  //       playerTwoTurn = false
-  //       playerOneTurn = true
-  //     }
+  // let checkPlayerSignal = () => {
+  //   if (playAsCheckbox.checked == true) {
+  //     return 'radio_button_unchecked'
+  //   } else {
+  //     return 'clear'
   //   }
-  //   return Gameboard.checkWin()
   // }
 
-  playRound()
+  // if (checkPlayerSignal() == 'clear') {
+  //   playerOne = Player('x')
+  // } else {
+  //   playerOne = Player('o')
+  // }
+
+  // if (checkPlayerSignal() == 'clear') {
+  //   playerTwo = Player('o')
+  // } else {
+  //   playerTwo = Player('x')
+  // }
+
+  let playerOne = Player('x')
+
+  playerOne.xPlayerMove()
+
+  if (Gameboard.checkWin() == true) {
+    console.log('winner')
+  }
 }
 
-// const playerOne = Player('x')
-// const playerTwo = Player('o')
-
-//// TO DOOOOOO
-
-//// try using as global variable to track turn / round to step through the rounds
+playGame()
