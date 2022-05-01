@@ -45,11 +45,18 @@ gameModeSlider.addEventListener('click', () => {
 // set reset button function
 resetButton.addEventListener('click', () => {
   Gameboard.newGameboard()
+  playGame()
+  playerOneScore.textContent = '0 Wins'
+  playerTwoScore.textContent = '0 Wins'
+  tieGameScore.textContent = '0 Wins'
   // need to remove clear and radio button classes from all board spaces
 })
 
 //GAMEBOARD MODULE
 const Gameboard = (() => {
+  const playerOneScore = document.getElementById('playerOneScore')
+  const playerTwoScore = document.getElementById('playerTwoScore')
+  const tieGameScore = document.getElementById('tieGameScore')
   const topLeftSpace = document.getElementById('top-left')
   const topMiddleSpace = document.getElementById('top-middle')
   const topRightSpace = document.getElementById('top-right')
@@ -76,34 +83,79 @@ const Gameboard = (() => {
 
   const newGameboard = () => {
     for (let i = 0; i < gameBoardObject.currentGameboard.length; i++) {
-      gameBoardObject.currentGameboard[i].firstElementChild.textContent = ''
+      let zone = gameBoardObject.currentGameboard[i].firstElementChild
+      zone.textContent = ''
+      zone.classList.remove('radio_button_unchecked')
+      zone.classList.remove('clear')
     }
+  }
+
+  const checkTie = () => {
+    let tieStatus = true
+
+    for (let i = 0; i < gameBoardObject.currentGameboard.length; i++) {
+      if (
+        gameBoardObject.currentGameboard[i].firstElementChild.textContent == ''
+      ) {
+        tieStatus = false
+      }
+    }
+    return tieStatus
   }
 
   const checkWin = () => {
     listOfWinningArrays = [
       [0, 1, 2],
       [0, 3, 6],
+      [0, 4, 8],
+      [1, 4, 7],
+      [2, 4, 6],
+      [2, 5, 8],
+      [3, 4, 5],
+      [6, 7, 8],
     ]
     let thisGameboard = Gameboard.gameBoardObject.currentGameboard
     let winStatus = false
-    listOfWinningArrays.forEach((element) => {
+    for (let x = 0; x < listOfWinningArrays.length; x++) {
+      let element = listOfWinningArrays[x]
       let i = element[0]
       let j = element[1]
       let k = element[2]
+
       let spaceOne = thisGameboard[i].firstElementChild.textContent
       let spaceTwo = thisGameboard[j].firstElementChild.textContent
       let spaceThree = thisGameboard[k].firstElementChild.textContent
+
+      // if any null can not win
       if (spaceOne == '' || spaceTwo == '' || spaceThree == '') {
         winStatus = false
+        continue
       } else if (spaceOne == spaceTwo && spaceOne == spaceThree) {
         winStatus = true
+        break
       }
-    })
+    }
     return winStatus
   }
 
-  return { newGameboard, gameBoardObject, checkWin }
+  let xScore = 0
+  let oScore = 0
+  let tieScore = 0
+
+  const addPoint = (winStatus) => {
+    if (winStatus == 'xwin') {
+      xScore++
+      playerOneScore.textContent = xScore.toString() + ' Wins'
+    } else if (winStatus == 'owin') {
+      oScore++
+      playerTwoScore.textContent = oScore.toString() + ' Wins'
+    } else if (winStatus == 'tie') {
+      tieScore++
+      tieGameScore.textContent = tieScore.toString() + ' Wins'
+    }
+  }
+
+  return { newGameboard, gameBoardObject, checkWin, checkTie, addPoint }
 })()
 
 // PLAYER FACTORY
@@ -145,11 +197,24 @@ const Player = (signal) => {
           if (targetSquare.innerText == '') {
             targetSquare.innerText = 'radio_button_unchecked'
             targetSquare.classList.add('radio_button_unchecked')
-            moveDone()
-            if (Gameboard.checkWin() !== true) {
+            if (
+              Gameboard.checkWin() !== true &&
+              Gameboard.checkTie() !== true
+            ) {
+              moveDone()
               xPlayerMove()
+            } else if (Gameboard.checkTie() == true) {
+              Gameboard.addPoint('tie')
+              alert('Tie Game')
+              moveDone()
+              Gameboard.newGameboard()
+              playGame()
             } else {
-              console.log(' O has won ...run winners code and add a point')
+              Gameboard.addPoint('owin')
+              alert(' O has won ...run winners code and add a point')
+              moveDone()
+              Gameboard.newGameboard()
+              playGame()
             }
           }
         }),
@@ -170,11 +235,24 @@ const Player = (signal) => {
           if (targetSquare.innerText == '') {
             targetSquare.innerText = 'clear'
             targetSquare.classList.add('clear')
-            moveDone()
-            if (Gameboard.checkWin() !== true) {
+            if (
+              Gameboard.checkWin() !== true &&
+              Gameboard.checkTie() !== true
+            ) {
+              moveDone()
               oPlayerMove()
+            } else if (Gameboard.checkTie() == true) {
+              Gameboard.addPoint('tie')
+              alert('Tie')
+              moveDone()
+              Gameboard.newGameboard()
+              playGame()
             } else {
-              console.log(' X has won ...run winners code and add a point')
+              Gameboard.addPoint('xwin')
+              alert(' X has won ...run winners code and add a point')
+              moveDone()
+              Gameboard.newGameboard()
+              playGame()
             }
           }
         }),
@@ -182,37 +260,14 @@ const Player = (signal) => {
     }
   }
 
-  return { playerSignal, xPlayerMove }
+  return { playerSignal, xPlayerMove, moveDone }
 }
 
 function playGame() {
-  // let checkPlayerSignal = () => {
-  //   if (playAsCheckbox.checked == true) {
-  //     return 'radio_button_unchecked'
-  //   } else {
-  //     return 'clear'
-  //   }
-  // }
-
-  // if (checkPlayerSignal() == 'clear') {
-  //   playerOne = Player('x')
-  // } else {
-  //   playerOne = Player('o')
-  // }
-
-  // if (checkPlayerSignal() == 'clear') {
-  //   playerTwo = Player('o')
-  // } else {
-  //   playerTwo = Player('x')
-  // }
-
   let playerOne = Player('x')
-
   playerOne.xPlayerMove()
-
-  if (Gameboard.checkWin() == true) {
-    console.log('winner')
-  }
 }
 
 playGame()
+
+/// NEED TO FIX THE RESET BUTTON FROM BEING ABLE TO BE CLICKED CONTINUOUSLY
