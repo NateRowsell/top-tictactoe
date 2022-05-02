@@ -27,6 +27,8 @@ difficultyDiv.append(
   difficultyButtonImpossible,
 )
 bottomControlPanel.appendChild(difficultyDiv)
+let addX
+let addO
 
 // Show difficulty when Player V Comp selected
 if (gameModeCheckbox.checked == true) {
@@ -40,16 +42,6 @@ gameModeSlider.addEventListener('click', () => {
     controlPanel.removeChild(bottomControlPanel)
   } else {
   }
-})
-
-// set reset button function
-resetButton.addEventListener('click', () => {
-  Gameboard.newGameboard()
-  playGame()
-  playerOneScore.textContent = '0 Wins'
-  playerTwoScore.textContent = '0 Wins'
-  tieGameScore.textContent = '0 Wins'
-  // need to remove clear and radio button classes from all board spaces
 })
 
 //GAMEBOARD MODULE
@@ -176,11 +168,15 @@ const Player = (signal) => {
       i < Gameboard.gameBoardObject.currentGameboard.length;
       i++
     ) {
-      let variableName = boardSpaces[i]
-      Gameboard.gameBoardObject.currentGameboard[i].removeEventListener(
-        'click',
-        variableName,
-      )
+      // let variableName = boardSpaces[i]
+      try {
+        Gameboard.gameBoardObject.currentGameboard[i].removeEventListener(
+          'click',
+          boardSpaces[i],
+        )
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -203,15 +199,15 @@ const Player = (signal) => {
             ) {
               moveDone()
               xPlayerMove()
-            } else if (Gameboard.checkTie() == true) {
-              Gameboard.addPoint('tie')
-              alert('Tie Game')
+            } else if (Gameboard.checkWin() == true) {
+              Gameboard.addPoint('owin')
+              alert(' O has won ...run winners code and add a point')
               moveDone()
               Gameboard.newGameboard()
               playGame()
             } else {
               Gameboard.addPoint('owin')
-              alert(' O has won ...run winners code and add a point')
+              alert('Tie Game')
               moveDone()
               Gameboard.newGameboard()
               playGame()
@@ -241,15 +237,15 @@ const Player = (signal) => {
             ) {
               moveDone()
               oPlayerMove()
-            } else if (Gameboard.checkTie() == true) {
-              Gameboard.addPoint('tie')
-              alert('Tie')
+            } else if (Gameboard.checkWin() == true) {
+              Gameboard.addPoint('xwin')
+              alert('X has won ...run winners code and add a point')
               moveDone()
               Gameboard.newGameboard()
               playGame()
             } else {
-              Gameboard.addPoint('xwin')
-              alert(' X has won ...run winners code and add a point')
+              Gameboard.addPoint('tie')
+              alert('Tie Game')
               moveDone()
               Gameboard.newGameboard()
               playGame()
@@ -260,11 +256,22 @@ const Player = (signal) => {
     }
   }
 
+  resetButton.addEventListener('click', () => {
+    moveDone()
+    Gameboard.newGameboard()
+    playGame()
+    playerOneScore.textContent = '0 Wins'
+    playerTwoScore.textContent = '0 Wins'
+    tieGameScore.textContent = '0 Wins'
+    // need to remove clear and radio button classes from all board spaces
+  })
+
   return { playerSignal, xPlayerMove, moveDone }
 }
 
+const playerOne = Player('x')
+
 function playGame() {
-  let playerOne = Player('x')
   playerOne.xPlayerMove()
 }
 
